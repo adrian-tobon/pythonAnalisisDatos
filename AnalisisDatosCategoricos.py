@@ -72,6 +72,7 @@ plt.show()
 product_proportion2 = df_sales_data['Product'].value_counts(normalize=True).reset_index()
 product_proportion2.columns = ['Product','Proportion']
 
+'''
 plt.figure(figsize=(5,3))
 sns.barplot(data=product_proportion2,x='Product',y='Proportion',palette='viridis')
 #sns.barplot(data=product_proportion2,hue='Product',y='Proportion',legend=False)
@@ -80,4 +81,37 @@ plt.xlabel('Producto')
 plt.ylabel('Proporcion')
 plt.xticks(rotation=45)
 plt.grid(True,axis='y',linestyle='--',alpha=0.7)
+plt.show()
+'''
+
+#grafico de tortas
+'''
+colors = ['#ff9999','#66b3ff','#99ff99','#ffcc99','#c2c2f0','#ffb3e6']
+explode = [0.2] + [0] * (len(product_proportion) - 1)
+#explode = [0.1,0,0,0,0,0,0,0]
+
+plt.figure(figsize=(4,4))
+plt.pie(product_proportion, labels=product_proportion.index,autopct='%1.1f%%',startangle=90,
+        colors=colors, explode=explode, shadow=True)
+plt.title('Distribucion de Productos Vendidos')
+#plt.axis('equal')
+plt.show()
+'''
+
+#diagrama de torta con porciones agregadas
+
+threshold = 0.10
+city_proportion['Others'] = city_proportion[city_proportion < threshold].sum()
+city_proportion = city_proportion[city_proportion >= threshold]
+
+print(city_proportion)
+
+colors = ['#ff9999','#66b3ff','#99ff99','#ffcc99','#c2c2f0','#ffb3e6']
+explode = [0.2] + [0] * (len(city_proportion) - 1)
+
+plt.figure(figsize=(4,4))
+plt.pie(city_proportion, labels=city_proportion.index,autopct='%1.1f%%',startangle=90,
+         colors = colors,explode=explode,shadow=True)
+plt.title('Distribucion de ventas por ciudad(agrupaciones pequeñas)')
+#plt.axis('equal')
 plt.show()
