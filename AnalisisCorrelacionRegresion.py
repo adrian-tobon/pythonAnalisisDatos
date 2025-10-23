@@ -129,17 +129,15 @@ print(f"R²(coeficiente de determinacion) del modelo multiple = {r_squared_multi
 
 #residuales
 residuals = y - model_multiple.predict(x_multiple)
-print(type(model_multiple.predict(x_multiple)))
-print(type(residuals))
+print(model_multiple.predict(x_multiple))
+print(residuals)
 
-#no me funciona el grafico
-'''
 plt.figure(figsize=(5,3))
-sns.scatterplot(x=model_multiple.predict(x_multiple), y=residuals)
+sns.scatterplot(x=model_multiple.predict(x_multiple).flatten(), y=residuals['Quantity Ordered'])
 plt.axhline(0,color='red',linestyle='--')
 plt.title('Grafico Residuales')
 plt.xlabel('Predicciones')
 plt.ylabel('Residuos')
 plt.grid(True,linestyle='--',alpha=0.5)
 plt.show()
-'''
+
