@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 
 
 ##########Visualizacion de datos basicos##########
@@ -103,27 +104,257 @@ df_stacked = pd.DataFrame(data_stacked)
 print(df_stacked)
 
 #matplotlib
-
+'''
 plt.figure(figsize=(6,3))
 plt.bar(df_stacked['Category'],df_stacked['Group 1'],label = 'Group 1',color='lightblue')
 plt.bar(df_stacked['Category'],df_stacked['Group 2'],bottom=df_stacked['Group 1'],label = 'Group 2',color='lightcoral')
-plt.title('Basic Bar chart - Matplotlib')
+plt.title('Stacked Bar chart - Matplotlib')
 plt.xlabel('Category')
 plt.ylabel('Values')
 plt.grid(True,axis='both',linestyle='--',alpha=0.5)
 plt.legend()
 plt.show()
+'''
 
+#grafico de barras agrupado
+'''
+plt.figure(figsize=(6,3))
+width = 0.3
 
+categories = df_stacked['Category']
+index = range(len(categories))
+
+plt.bar([i - width/2 for i in index],df_stacked['Group 1'],width=width,label = 'Group 1',color='lightblue')
+plt.bar([i + width/2 for i in index],df_stacked['Group 2'],width=width,label = 'Group 2',color='lightcoral')
+
+plt.title('Gruped Bar chart')
+plt.xlabel('Category')
+plt.ylabel('Values')
+
+plt.xticks(index,categories)
+plt.legend()
+plt.grid(True,axis='both',linestyle='--',alpha=0.5)
+plt.show()
+'''
+
+#grafico de barras personalizado
+'''
+plt.figure(figsize=(4, 3))
+plt.bar(df['Category'], df['Values'], color='cornflowerblue', edgecolor='black', linewidth=2, alpha=0.8)
+plt.title('Customized Bar Chart')
+plt.xlabel('Category')
+plt.ylabel('Values')
+plt.xticks(rotation=45, fontsize=12)
+plt.yticks(rotation=45, fontsize=12)
+plt.grid(True, axis='both', linestyle='--', alpha=0.5)
+plt.show()
+'''
+
+#grafico de lineas
+data3 = {'Month':['Jan','Feb','Mar','Apr','May','Jun'],
+         'Sales':[250,300,400,350,450,500]}
+
+df3 = pd.DataFrame(data3)
+
+print(df3)
+
+#mathplotlib
+'''
+plt.figure(figsize=(6,3))
+plt.plot(df3['Month'],df3['Sales'],color='darkblue',marker='o')
+plt.title('Line chart - Mathplotlib ')
+plt.xlabel('Month')
+plt.ylabel('Sales')
+plt.grid(True,axis='both',linestyle='--',alpha=0.5)
+plt.legend()
+plt.show()
+'''
 #seaborn
 '''
 sns.set_style("whitegrid")
-sns.set_palette("pastel")
 
 plt.figure(figsize=(6,3))
-sns.barplot(x = 'Category',y = 'Values',color='skyblue',data=df2)
-plt.title('Basic Bar chart - Seaborn')
-plt.xlabel('Category')
-plt.ylabel('Values')
+#sns.lineplot(x=df3['Month'],y=df3['Sales'],color='darkblue')
+sns.lineplot(x='Month',y='Sales',color='darkblue',data=df3,marker='o',color='red')
+plt.title('Line chart - Seaborn ')
+plt.xlabel('Month')
+plt.ylabel('Sales')
+plt.grid(True,axis='both',linestyle='--',alpha=0.5)
+plt.legend()
 plt.show()
 '''
+
+#multiples lineas
+data_multi = {'Month':['Jan','Feb','Mar','Apr','May','Jun'],
+         'Sales A':[250,300,400,350,450,500],
+         'Sales B':[200,250,300,280,320,400]}
+
+df_multi = pd.DataFrame(data_multi)
+print(df_multi)
+
+#matplotlib
+'''
+plt.figure(figsize=(6,3))
+plt.plot(df_multi['Month'],df_multi['Sales A'],color='darkblue',marker='o',label='Product A')
+plt.plot(df_multi['Month'],df_multi['Sales B'],color='red',marker='D',label='Product A')
+plt.title('Multiple Line chart - Mathplotlib ')
+plt.xlabel('Month')
+plt.ylabel('Sales')
+plt.grid(True,axis='both',linestyle='--',alpha=0.5)
+plt.legend()
+plt.show()
+'''
+#seaborn
+'''
+plt.figure(figsize=(6,3))
+sns.lineplot(x=df_multi['Month'],y=df_multi['Sales A'],color='darkblue',marker='o',label='Product A')
+sns.lineplot(x=df_multi['Month'],y=df_multi['Sales B'],color='red',marker='D',label='Product A')
+plt.title('Multiple Line chart - Seaborn ')
+plt.xlabel('Month')
+plt.ylabel('Sales')
+plt.grid(True,axis='both',linestyle='--',alpha=0.5)
+plt.legend()
+plt.show()
+'''
+
+#grafico de lineas con intervalos de confianza
+'''
+df_long = pd.melt(df_multi,id_vars=['Month'],value_vars=['Sales A','Sales B'],var_name='Product',value_name='Sales')
+print(df_long)
+
+plt.figure(figsize=(6,3))
+sns.lineplot(x=df_long['Month'],y=df_long['Sales'],hue=df_long['Product'],color='darkblue',marker='o',errorbar='sd')
+plt.title('Line chart with confidence interval - Seaborn ')
+plt.xlabel('Month')
+plt.ylabel('Sales')
+plt.show()
+'''
+
+# Crear un DataFrame con múltiples observaciones por cada mes y producto
+'''
+np.random.seed(42)  # Para reproducibilidad
+data_multi_random = {'Month': ['Jan', 'Jan', 'Jan', 'Feb', 'Feb', 'Feb', 'Mar', 'Mar', 'Mar', 
+                               'Apr', 'Apr', 'Apr', 'May', 'May', 'May', 'Jun', 'Jun', 'Jun'],
+                     'Product': ['Product A', 'Product A', 'Product A', 'Product A', 'Product A', 'Product A', 
+                                 'Product A', 'Product A', 'Product A', 'Product A', 'Product A', 'Product A', 
+                                 'Product A', 'Product A', 'Product A', 'Product A', 'Product A', 'Product A'],
+                     'Sales': [250, 260, 240, 300, 310, 290, 400, 410, 390, 350, 360, 340, 450, 460, 440, 500, 510, 490]}
+
+df_multi_random = pd.DataFrame(data_multi_random)
+
+print(df_multi_random)
+
+# Añadir una pequeña variabilidad a las ventas de 'Product B'
+data_multi_random_b = {'Month': ['Jan', 'Jan', 'Jan', 'Feb', 'Feb', 'Feb', 'Mar', 'Mar', 'Mar', 
+                               'Apr', 'Apr', 'Apr', 'May', 'May', 'May', 'Jun', 'Jun', 'Jun'],
+                     'Product': ['Product B', 'Product B', 'Product B', 'Product B', 'Product B', 'Product B', 
+                                 'Product B', 'Product B', 'Product B', 'Product B', 'Product B', 'Product B', 
+                                 'Product B', 'Product B', 'Product B', 'Product B', 'Product B', 'Product B'],
+                     'Sales': [200, 210, 190, 250, 260, 240, 300, 310, 290, 280, 290, 270, 320, 330, 310, 400, 410, 390]}
+
+df_multi_random_b = pd.DataFrame(data_multi_random_b)
+
+# Concatenar ambos productos
+df_random = pd.concat([df_multi_random, df_multi_random_b])
+
+# Graficar con Seaborn mostrando el intervalo de confianza
+plt.figure(figsize=(4, 3))
+sns.lineplot(x='Month', y='Sales', hue='Product', data=df_random, marker='o', errorbar='sd')
+plt.title('Line Chart with Confidence Interval - Seaborn')
+plt.xlabel('Month')
+plt.ylabel('Sales')
+plt.show()
+'''
+
+#graficos de dispersion
+
+data4 = {'Height': [150, 160, 165, 170, 175, 180, 185, 190],
+        'Weight': [50, 55, 60, 65, 70, 75, 80, 85]}
+df4 = pd.DataFrame(data4)
+print(df4)
+
+#matplotlib
+'''
+plt.figure(figsize=(4, 3))
+plt.scatter(df4['Height'], df4['Weight'], marker='o', color='red')
+plt.title('Scatter chart - Mathplotlib')
+plt.xlabel('Height')
+plt.ylabel('Weight')
+plt.grid(True,axis='both',linestyle='--',alpha=0.5)
+plt.show()
+'''
+#seaborn
+df4['Category'] = ['Group 1', 'Group 1', 'Group 2', 'Group 2', 'Group 1', 'Group 2', 'Group 1', 'Group 2']
+'''
+sns.set_style("whitegrid")
+sns.set_palette("muted")
+
+plt.figure(figsize=(4, 3))
+#sns.scatterplot(x=df4['Height'], y=df4['Weight'],hue=df4['Category'], marker='o', color='red')
+sns.regplot(x=df4['Height'], y=df4['Weight'],scatter_kws={'s':50}, line_kws={'color':'red'})
+plt.title('Scatter chart - Seaborn')
+plt.xlabel('Height')
+plt.ylabel('Weight')
+plt.show()
+'''
+#tamaño variable (Bubble plot)
+df4['Income'] = [80000, 32000, 35000, 40000, 45000, 48000, 52000, 60000]
+'''
+plt.figure(figsize=(4, 3))
+plt.scatter(df4['Height'], df4['Weight'],s=df4['Income']*0.001,alpha=0.6,edgecolor='w',linewidth=2, color='red')
+plt.title('Bubble plot chart - Mathplotlib')
+plt.xlabel('Height')
+plt.ylabel('Weight')
+plt.grid(True,axis='both',linestyle='--',alpha=0.5)
+plt.show()
+'''
+
+#graficos de dispersion con multiples series
+data_multi2 = {'Height': [150, 160, 165, 170, 175, 180, 185, 190],
+              'Weight_A': [50, 55, 60, 65, 70, 75, 80, 85],
+              'Weight_B': [48, 53, 58, 63, 68, 73, 78, 83]}
+df_multi2 = pd.DataFrame(data_multi2)
+print(df_multi2)
+
+#matplotlib
+'''
+plt.figure(figsize=(4, 3))
+plt.scatter(df_multi2['Height'], df_multi2['Weight_A'], color='red',label="Group A")
+plt.scatter(df_multi2['Height'], df_multi2['Weight_B'], color='blue',label="Group B")
+plt.title('Bubble plot chart - Mathplotlib')
+plt.xlabel('Height')
+plt.ylabel('Weight')
+plt.grid(True,axis='both',linestyle='--',alpha=0.5)
+plt.legend()
+plt.show()
+'''
+#seaborn
+'''
+plt.figure(figsize=(4, 3))
+sns.scatterplot(x=df_multi2['Height'], y=df_multi2['Weight_A'], color='red',label="Group A")
+sns.scatterplot(x=df_multi2['Height'], y=df_multi2['Weight_B'], color='blue',label="Group B")
+plt.title('Bubble plot chart - Seaborn')
+plt.xlabel('Height')
+plt.ylabel('Weight')
+plt.grid(True,axis='both',linestyle='--',alpha=0.5)
+plt.legend()
+plt.show()
+'''
+
+
+#matrice de correlacion
+
+data5 = {'Height': [150, 160, 165, 170, 175, 180, 185, 190],
+        'Weight': [50, 55, 60, 65, 70, 75, 80, 85],
+        'Income': [30000, 32000, 35000, 40000, 45000, 48000, 52000, 60000]}
+df5 = pd.DataFrame(data5)
+correlation_matrix = df5.corr()
+print(correlation_matrix)
+
+mask = np.triu(np.ones_like(correlation_matrix, dtype=bool))
+#mask = np.tril(np.ones_like(correlation_matrix, dtype=bool))
+
+plt.figure(figsize=(4, 3))
+sns.heatmap(correlation_matrix,annot=True,cmap='coolwarm',mask=mask,linewidth=0.5)
+plt.title('Heat Map - Seaborn')
+plt.show()
