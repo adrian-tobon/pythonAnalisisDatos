@@ -175,6 +175,7 @@ def scatter_plot_dynamic(country1,country2,trendline):
 
 
 # Crear un widget interactivo para seleccionar los países y la opción de línea de tendencia
+#solo se puede ejcutar en un servidor jupyter
 interact(scatter_plot_dynamic, 
          country1=widgets.Dropdown(options=countries, description='País 1', value='United States'),
          country2=widgets.Dropdown(options=countries, description='País 2', value='China'),
